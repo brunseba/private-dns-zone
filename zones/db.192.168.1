@@ -1,0 +1,19 @@
+$TTL    604800
+@       IN      SOA     ns1.example.local. admin.example.local. (
+                              2024062101         ; Serial
+                              604800             ; Refresh
+                              86400              ; Retry
+                              2419200            ; Expire
+                              604800 )           ; Negative Cache TTL
+
+; Name servers
+@       IN      NS      ns1.example.local.
+@       IN      NS      ns2.example.local.
+
+; PTR records
+10      IN      PTR     ns1.example.local.
+11      IN      PTR     ns2.example.local.
+20      IN      PTR     www.example.local.
+30      IN      PTR     mail.example.local.
+40      IN      PTR     ftp.example.local.
+50      IN      PTR     db.example.local.

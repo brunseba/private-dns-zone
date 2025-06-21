@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  bind:
+    image: internetsystemsconsortium/bind9:9.19
+    container_name: bind-dns-server
+    restart: unless-stopped
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+      - "953:953/tcp"  # RNDC control port
+    volumes:
+      - ./config:/etc/bind
+      - ./zones:/var/lib/bind
+      - ./logs:/var/log/bind
+    environment:
+      - BIND9_USER=bind
+    networks:
+      - dns-network
+    command: ["named", "-g", "-c", "/etc/bind/named.conf", "-u", "bind"]
+    healthcheck:
+      test: ["CMD", "dig", "@127.0.0.1", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+networks:
+  dns-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  bind-config:
+  bind-zones:
+  bind-logs:

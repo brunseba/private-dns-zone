@@ -1,0 +1,39 @@
+// Local zones configuration
+// Define your custom DNS zones here
+
+// Example private zone
+zone "example.local" {
+    type master;
+    file "/var/lib/bind/db.example.local";
+    allow-update { key "tsig-key"; key "admin-key"; };
+    allow-transfer { key "tsig-key"; };
+    allow-query { any; };
+};
+
+// Reverse zone for example.local (assuming 192.168.1.0/24)
+zone "1.168.192.in-addr.arpa" {
+    type master;
+    file "/var/lib/bind/db.192.168.1";
+    allow-update { key "tsig-key"; key "admin-key"; };
+    allow-transfer { key "tsig-key"; };
+    allow-query { any; };
+};
+
+// Development zone
+zone "dev.local" {
+    type master;
+    file "/var/lib/bind/db.dev.local";
+    allow-update { key "tsig-key"; key "admin-key"; };
+    allow-transfer { key "tsig-key"; };
+    allow-query { any; };
+};
+
+// Test zone for dynamic updates
+zone "test.local" {
+    type master;
+    file "/var/lib/bind/db.test.local";
+    allow-update { key "tsig-key"; key "admin-key"; };
+    allow-transfer { key "tsig-key"; };
+    allow-query { any; };
+    journal "/var/lib/bind/db.test.local.jnl";
+};

@@ -1,0 +1,26 @@
+// TSIG Keys Configuration
+// These keys are used for secure DNS operations including zone transfers and updates
+
+// Primary TSIG key for zone operations
+key "tsig-key" {
+    algorithm hmac-sha256;
+    secret "dGhpc2lzYXNhbXBsZWtleWZvcnRlc3RpbmdwdXJwb3Nlc29ubHlkb25vdHVzZWluZXByb2R1Y3Rpb24=";
+};
+
+// Secondary TSIG key for administrative operations
+key "admin-key" {
+    algorithm hmac-sha256;
+    secret "YWRtaW5rZXlmb3JzZWN1cmVhZG1pbmlzdHJhdGlvbm9wZXJhdGlvbnNkb25vdHVzZWluZXByb2R1Y3Rpb24=";
+};
+
+// RNDC key for remote control operations
+key "rndc-key" {
+    algorithm hmac-sha256;
+    secret "cm5kY2tleWZvcnJlbW90ZWNvbnRyb2xvcGVyYXRpb25zZG9ub3R1c2VpbmVwcm9kdWN0aW9u";
+};
+
+// Control configuration for RNDC
+controls {
+    inet 127.0.0.1 port 953
+        allow { 127.0.0.1; } keys { "rndc-key"; };
+};

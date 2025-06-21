@@ -1,0 +1,28 @@
+$TTL    300
+@       IN      SOA     ns1.dev.local. admin.dev.local. (
+                              2024062101         ; Serial
+                              300                ; Refresh (5 minutes for dev)
+                              60                 ; Retry (1 minute for dev)
+                              604800             ; Expire
+                              300 )              ; Negative Cache TTL
+
+; Name servers
+@       IN      NS      ns1.dev.local.
+
+; A records for development services
+ns1     IN      A       172.20.0.10
+api     IN      A       172.20.0.20
+web     IN      A       172.20.0.21
+db      IN      A       172.20.0.30
+cache   IN      A       172.20.0.31
+test    IN      A       172.20.0.40
+
+; Development microservices
+auth    IN      A       172.20.0.50
+user    IN      A       172.20.0.51
+order   IN      A       172.20.0.52
+payment IN      A       172.20.0.53
+
+; CNAME records for convenience
+database IN     CNAME   db.dev.local.
+redis   IN      CNAME   cache.dev.local.

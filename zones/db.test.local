@@ -1,0 +1,16 @@
+$TTL    60
+@       IN      SOA     ns1.test.local. admin.test.local. (
+                              2024062101         ; Serial
+                              60                 ; Refresh (1 minute for testing)
+                              30                 ; Retry (30 seconds for testing)
+                              604800             ; Expire
+                              60 )               ; Negative Cache TTL
+
+; Name servers
+@       IN      NS      ns1.test.local.
+
+; Initial A records
+ns1     IN      A       10.0.0.10
+
+; This zone is designed for dynamic updates using TSIG keys
+; Use nsupdate with the appropriate TSIG key to add/modify records

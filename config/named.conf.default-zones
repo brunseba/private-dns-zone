@@ -1,0 +1,43 @@
+// Default zones configuration
+// Standard zones required for proper DNS operation
+
+// Root zone
+zone "." {
+    type hint;
+    file "/usr/share/dns/root.hints";
+};
+
+// Localhost forward zone
+zone "localhost" {
+    type master;
+    file "/etc/bind/db.local";
+};
+
+// Localhost reverse zone
+zone "127.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.127";
+};
+
+// Local IPv6 zones
+zone "0.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.0";
+};
+
+zone "255.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.255";
+};
+
+// RFC 1912 zones
+zone "localhost.localdomain" {
+    type master;
+    file "/etc/bind/db.local";
+};
+
+// IPv6 localhost
+zone "1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa" {
+    type master;
+    file "/etc/bind/db.local";
+};
