@@ -1,0 +1,10 @@
+{% if page.edit_url %}
+  <a href="{{ page.edit_url }}" title="{{ lang.t('edit.link.title') }}" class="md-content__button md-icon">
+    {% include ".icons/material/pencil.svg" %}
+  </a>
+{% endif %}
+{% if config.repo_url %}
+  <a href="{{ [config.repo_url, "blob", config.repo_name.split("/")[1], page.file.src_path] | join("/") }}" title="{{ lang.t('view.link.title') }}" class="md-content__button md-icon">
+    {% include ".icons/material/eye.svg" %}
+  </a>
+{% endif %}

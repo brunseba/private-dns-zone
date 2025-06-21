@@ -15,6 +15,7 @@ copyright: Copyright &copy; 2024 DNS Operations Team
 theme:
   name: material
   language: en
+  custom_dir: docs/overrides
   palette:
     - scheme: default
       primary: blue
@@ -41,6 +42,8 @@ theme:
     - content.code.annotate
     - content.code.copy
     - content.tabs.link
+    - content.action.edit
+    - content.action.view
   icon:
     repo: fontawesome/brands/git-alt
 
@@ -48,11 +51,19 @@ theme:
 plugins:
   - search:
       lang: en
+  # Git revision tracking:
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: timeago
+      timezone: UTC
+      locale: en
+      fallback_to_build_date: true
+  - git-committers:
+      repository: brunseba/private-dns-zone
+      branch: main
   # Optional plugins (disabled temporarily):
   # - mermaid2:
   #     version: 10.4.0
-  # - git-revision-date-localized:
-  #     type: date
   # - minify:
   #     minify_html: true
 

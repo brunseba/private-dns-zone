@@ -6,7 +6,10 @@ mkdocs-material>=9.4.0
 pymdown-extensions>=10.3.0
 mkdocs-mermaid2-plugin>=1.1.0
 
-# Optional but recommended plugins
+# Git revision and contributor tracking
 mkdocs-git-revision-date-localized-plugin>=1.2.0
+mkdocs-git-committers-plugin-2>=1.2.0
+
+# Optional but recommended plugins
 mkdocs-minify-plugin>=0.7.0
 mkdocs-redirects>=1.2.0
