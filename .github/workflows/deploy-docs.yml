@@ -51,10 +51,7 @@ jobs:
       - name: Install MkDocs and dependencies
         run: |
           pip install --upgrade pip
-          pip install mkdocs-material
-          pip install pymdown-extensions
-          pip install mkdocs-mermaid2-plugin
-          # Add any additional dependencies here if needed
+          pip install -r requirements.txt
 
       - name: Setup Pages
         id: pages
@@ -65,7 +62,7 @@ jobs:
           mkdocs build --strict
           
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./site
 
@@ -79,4 +76,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
