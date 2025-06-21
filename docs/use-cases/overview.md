@@ -62,11 +62,11 @@ graph TB
     TSIG -.->|Secure Keys| DNSCTL
     TSIG -.->|Secure Keys| OCTODNS
 
-    classDef dnsServer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    classDef k8s fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef tools fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef cicd fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
-    classDef security fill:#ffebee,stroke:#b71c1c,stroke-width:2px
+    classDef dnsServer fill:#263238,stroke:#37474f,stroke-width:2px,color:#ffffff
+    classDef k8s fill:#1a237e,stroke:#283593,stroke-width:2px,color:#ffffff
+    classDef tools fill:#bf360c,stroke:#d84315,stroke-width:2px,color:#ffffff
+    classDef cicd fill:#1b5e20,stroke:#2e7d32,stroke-width:2px,color:#ffffff
+    classDef security fill:#b71c1c,stroke:#c62828,stroke-width:2px,color:#ffffff
 
     class DNS,TSIG,ENV dnsServer
     class K8S,ING,SVC,EXT k8s
@@ -181,9 +181,9 @@ graph LR
     DNSCTL -.->|Authenticated Updates| BIND
     OCTODNS -.->|Authenticated Updates| BIND
     
-    classDef security fill:#ffebee,stroke:#b71c1c,stroke-width:2px
-    classDef client fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef server fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef security fill:#b71c1c,stroke:#c62828,stroke-width:2px,color:#ffffff
+    classDef client fill:#bf360c,stroke:#d84315,stroke-width:2px,color:#ffffff
+    classDef server fill:#263238,stroke:#37474f,stroke-width:2px,color:#ffffff
     
     class ENVMGR,TSIGKEY,ENVFILE security
     class EXT,DNSCTL,OCTODNS client
