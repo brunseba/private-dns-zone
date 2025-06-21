@@ -1,11 +1,11 @@
 site_name: BIND DNS Server with TSIG Documentation
 site_description: Comprehensive documentation for BIND DNS server with TSIG key capabilities
 site_author: DNS Operations Team
-site_url: https://dns-docs.local
+site_url: https://brunseba.github.io/private-dns-zone
 
 # Repository information
 repo_name: private-dns-zone
-repo_url: https://github.com/your-org/private-dns-zone
+repo_url: https://github.com/brunseba/private-dns-zone
 edit_uri: edit/main/docs/
 
 # Copyright
@@ -48,9 +48,9 @@ theme:
 plugins:
   - search:
       lang: en
-  # Optional plugins (uncomment when installed):
-  # - mermaid2:
-  #     version: 9.4.3
+  # Optional plugins:
+  - mermaid2:
+      version: 10.4.0
   # - git-revision-date-localized:
   #     type: date
   # - minify:

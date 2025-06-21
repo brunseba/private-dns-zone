@@ -1,0 +1,12 @@
+# MkDocs and Material Theme
+mkdocs>=1.5.3
+mkdocs-material>=9.4.0
+
+# Extensions for enhanced functionality
+pymdown-extensions>=10.3.0
+mkdocs-mermaid2-plugin>=1.1.0
+
+# Optional but recommended plugins
+mkdocs-git-revision-date-localized-plugin>=1.2.0
+mkdocs-minify-plugin>=0.7.0
+mkdocs-redirects>=1.2.0
