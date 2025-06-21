@@ -51,6 +51,7 @@ plugins:
   # Optional plugins:
   - mermaid2:
       version: 10.4.0
+      javascript: true
   # - git-revision-date-localized:
   #     type: date
   # - minify:
@@ -134,9 +135,9 @@ nav:
 extra_css:
   - assets/stylesheets/extra.css
 
-# Custom JavaScript
-extra_javascript:
-  - assets/javascripts/mermaid.js
+# Custom JavaScript - now handled by mermaid2 plugin
+# extra_javascript:
+#   - assets/javascripts/mermaid.js
 
 # Extra
 extra:
