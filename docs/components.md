@@ -194,6 +194,201 @@ Components enabling external integrations:
 - **CMP-068 Backup Integration**: External backup
 - **CMP-069 Cloud Providers**: Cloud DNS integration
 
+## System Architecture Diagram
+
+### Complete Components Overview
+
+```mermaid
+flowchart TB
+    subgraph "Core DNS Services [CMP-001 to CMP-009]"
+        CMP001["CMP-001<br/>BIND DNS Server"]
+        CMP002["CMP-002<br/>DNS Zone Files"]
+        CMP003["CMP-003<br/>Named Configuration"]
+        CMP004["CMP-004<br/>DNS Query Handler"]
+        CMP005["CMP-005<br/>Zone Transfer Service"]
+        CMP006["CMP-006<br/>DNS Forwarders"]
+        CMP007["CMP-007<br/>Health Check Service"]
+        CMP008["CMP-008<br/>Logging Service"]
+        CMP009["CMP-009<br/>Statistics Service"]
+    end
+
+    subgraph "Security & Authentication [CMP-010 to CMP-019]"
+        CMP010["CMP-010<br/>TSIG Authentication"]
+        CMP011["CMP-011<br/>TSIG Key Store"]
+        CMP012["CMP-012<br/>Key Generation Service"]
+        CMP013["CMP-013<br/>Access Control Lists"]
+        CMP014["CMP-014<br/>Update Policies"]
+        CMP015["CMP-015<br/>Encryption Service"]
+        CMP016["CMP-016<br/>RNDC Control"]
+        CMP017["CMP-017<br/>Security Monitoring"]
+        CMP018["CMP-018<br/>Key Rotation Service"]
+        CMP019["CMP-019<br/>Certificate Management"]
+    end
+
+    subgraph "Container & Orchestration [CMP-020 to CMP-029]"
+        CMP020["CMP-020<br/>Docker Engine"]
+        CMP021["CMP-021<br/>Docker Compose"]
+        CMP022["CMP-022<br/>DNS Container Image"]
+        CMP023["CMP-023<br/>Volume Management"]
+        CMP024["CMP-024<br/>Network Configuration"]
+        CMP025["CMP-025<br/>Resource Limits"]
+        CMP026["CMP-026<br/>Health Checks"]
+        CMP027["CMP-027<br/>Service Discovery"]
+        CMP028["CMP-028<br/>Load Balancing"]
+        CMP029["CMP-029<br/>Backup Service"]
+    end
+
+    subgraph "Development & Testing [CMP-030 to CMP-039]"
+        CMP030["CMP-030<br/>Development Environment"]
+        CMP031["CMP-031<br/>DNS Client Container"]
+        CMP032["CMP-032<br/>Testing Framework"]
+        CMP033["CMP-033<br/>DNSControl Tool"]
+        CMP034["CMP-034<br/>octoDNS Tool"]
+        CMP035["CMP-035<br/>Dig Utilities"]
+        CMP036["CMP-036<br/>Example Configurations"]
+        CMP037["CMP-037<br/>Integration Tests"]
+        CMP038["CMP-038<br/>Performance Tests"]
+        CMP039["CMP-039<br/>Mock Services"]
+    end
+
+    subgraph "Quality & Release Management [CMP-040 to CMP-049]"
+        CMP040["CMP-040<br/>Pre-commit Hooks"]
+        CMP041["CMP-041<br/>Linting Services"]
+        CMP042["CMP-042<br/>Security Scanning"]
+        CMP043["CMP-043<br/>Formatting Tools"]
+        CMP044["CMP-044<br/>Documentation Linting"]
+        CMP045["CMP-045<br/>Commitizen Service"]
+        CMP046["CMP-046<br/>Changelog Generator"]
+        CMP047["CMP-047<br/>Version Management"]
+        CMP048["CMP-048<br/>Release Automation"]
+        CMP049["CMP-049<br/>Quality Gates"]
+    end
+
+    subgraph "Documentation & Configuration [CMP-050 to CMP-059]"
+        CMP050["CMP-050<br/>MkDocs Framework"]
+        CMP051["CMP-051<br/>Documentation Content"]
+        CMP052["CMP-052<br/>Mermaid Diagrams"]
+        CMP053["CMP-053<br/>Navigation Structure"]
+        CMP054["CMP-054<br/>Environment Templates"]
+        CMP055["CMP-055<br/>Configuration Validation"]
+        CMP056["CMP-056<br/>Example Files"]
+        CMP057["CMP-057<br/>Setup Scripts"]
+        CMP058["CMP-058<br/>Build Configuration"]
+        CMP059["CMP-059<br/>Environment Management"]
+    end
+
+    subgraph "Integration & Use Cases [CMP-060 to CMP-069]"
+        CMP060["CMP-060<br/>External-DNS Integration"]
+        CMP061["CMP-061<br/>DNSControl Integration"]
+        CMP062["CMP-062<br/>octoDNS Integration"]
+        CMP063["CMP-063<br/>Kubernetes Client"]
+        CMP064["CMP-064<br/>API Gateway"]
+        CMP065["CMP-065<br/>Webhook Service"]
+        CMP066["CMP-066<br/>Monitoring Integration"]
+        CMP067["CMP-067<br/>Log Aggregation"]
+        CMP068["CMP-068<br/>Backup Integration"]
+        CMP069["CMP-069<br/>Cloud Providers"]
+    end
+
+    %% Critical Dependencies
+    CMP020 --> CMP021
+    CMP021 --> CMP022
+    CMP022 --> CMP001
+    CMP012 --> CMP011
+    CMP011 --> CMP010
+    CMP010 --> CMP001
+    CMP002 --> CMP001
+    CMP003 --> CMP001
+    CMP021 --> CMP023
+    CMP021 --> CMP024
+    CMP021 --> CMP025
+    CMP021 --> CMP026
+
+    %% Service Dependencies
+    CMP001 --> CMP004
+    CMP001 --> CMP005
+    CMP001 --> CMP007
+    CMP001 --> CMP008
+    CMP001 --> CMP009
+    CMP001 --> CMP013
+    CMP001 --> CMP014
+    CMP001 --> CMP016
+    CMP001 --> CMP017
+
+    %% Security Dependencies
+    CMP011 --> CMP016
+    CMP015 --> CMP019
+    CMP008 --> CMP017
+    CMP012 --> CMP018
+
+    %% Development Dependencies
+    CMP020 --> CMP031
+    CMP031 --> CMP032
+    CMP031 --> CMP033
+    CMP031 --> CMP034
+    CMP031 --> CMP035
+    CMP031 --> CMP037
+    CMP032 --> CMP038
+    CMP032 --> CMP039
+    CMP031 --> CMP036
+
+    %% Quality Dependencies
+    CMP040 --> CMP041
+    CMP040 --> CMP042
+    CMP040 --> CMP043
+    CMP040 --> CMP044
+    CMP045 --> CMP046
+    CMP045 --> CMP047
+    CMP048 --> CMP049
+    CMP049 --> CMP040
+
+    %% Documentation Dependencies
+    CMP050 --> CMP051
+    CMP050 --> CMP052
+    CMP050 --> CMP053
+    CMP054 --> CMP055
+    CMP054 --> CMP056
+    CMP054 --> CMP059
+    CMP057 --> CMP059
+    CMP058 --> CMP045
+
+    %% Integration Dependencies
+    CMP001 --> CMP060
+    CMP001 --> CMP061
+    CMP001 --> CMP062
+    CMP010 --> CMP060
+    CMP010 --> CMP061
+    CMP010 --> CMP062
+    CMP060 --> CMP063
+    CMP062 --> CMP069
+    CMP008 --> CMP066
+    CMP008 --> CMP067
+    CMP029 --> CMP068
+
+    %% Testing Integration
+    CMP037 --> CMP001
+    CMP032 --> CMP001
+    CMP033 --> CMP001
+    CMP034 --> CMP001
+
+    %% Dark color scheme
+    classDef coreService fill:#1a237e,stroke:#3f51b5,stroke-width:2px,color:#ffffff
+    classDef security fill:#b71c1c,stroke:#d32f2f,stroke-width:2px,color:#ffffff
+    classDef container fill:#2e7d32,stroke:#4caf50,stroke-width:2px,color:#ffffff
+    classDef development fill:#e65100,stroke:#ff9800,stroke-width:2px,color:#ffffff
+    classDef quality fill:#4a148c,stroke:#9c27b0,stroke-width:2px,color:#ffffff
+    classDef documentation fill:#37474f,stroke:#607d8b,stroke-width:2px,color:#ffffff
+    classDef integration fill:#bf360c,stroke:#ff5722,stroke-width:2px,color:#ffffff
+
+    class CMP001,CMP002,CMP003,CMP004,CMP005,CMP006,CMP007,CMP008,CMP009 coreService
+    class CMP010,CMP011,CMP012,CMP013,CMP014,CMP015,CMP016,CMP017,CMP018,CMP019 security
+    class CMP020,CMP021,CMP022,CMP023,CMP024,CMP025,CMP026,CMP027,CMP028,CMP029 container
+    class CMP030,CMP031,CMP032,CMP033,CMP034,CMP035,CMP036,CMP037,CMP038,CMP039 development
+    class CMP040,CMP041,CMP042,CMP043,CMP044,CMP045,CMP046,CMP047,CMP048,CMP049 quality
+    class CMP050,CMP051,CMP052,CMP053,CMP054,CMP055,CMP056,CMP057,CMP058,CMP059 documentation
+    class CMP060,CMP061,CMP062,CMP063,CMP064,CMP065,CMP066,CMP067,CMP068,CMP069 integration
+```
+
 ## Component Dependencies
 
 ### Critical Path Dependencies
@@ -208,6 +403,14 @@ graph TD
     CMP-010 --> CMP-001
     CMP-002[Zone Files] --> CMP-001
     CMP-003[Named Config] --> CMP-001
+    
+    classDef critical fill:#1a237e,stroke:#3f51b5,stroke-width:3px,color:#ffffff
+    classDef security fill:#b71c1c,stroke:#d32f2f,stroke-width:2px,color:#ffffff
+    classDef container fill:#2e7d32,stroke:#4caf50,stroke-width:2px,color:#ffffff
+    
+    class CMP-001 critical
+    class CMP-010,CMP-011,CMP-012 security
+    class CMP-020,CMP-021,CMP-022 container
 ```
 
 ### Quality & Release Dependencies
@@ -221,6 +424,12 @@ graph TD
     CMP-045 --> CMP-047[Version Mgmt]
     CMP-048[Release Automation] --> CMP-049[Quality Gates]
     CMP-049 --> CMP-040
+    
+    classDef quality fill:#4a148c,stroke:#9c27b0,stroke-width:2px,color:#ffffff
+    classDef release fill:#e65100,stroke:#ff9800,stroke-width:2px,color:#ffffff
+    
+    class CMP-040,CMP-041,CMP-042,CMP-043,CMP-044,CMP-049 quality
+    class CMP-045,CMP-046,CMP-047,CMP-048 release
 ```
 
 ## Component Status Legend
