@@ -220,9 +220,9 @@ sudo chmod 644 zones/*
 
 Now that you have a working DNS server:
 
-1. **[Customize Your Zones](../user-guide/zone-management.md)** - Add your own domains
-2. **[Secure Your Setup](../configuration/security.md)** - Change default keys
-3. **[Set Up Monitoring](../user-guide/monitoring.md)** - Monitor your DNS server
+1. **Customize Your Zones** - Edit files in the `zones/` directory to add your own domains
+2. **Secure Your Setup** - Change default TSIG keys for production use
+3. **Set Up Monitoring** - Configure log monitoring and alerting
 4. **[Learn TSIG](../design/tsig-security.md)** - Deep dive into TSIG security
 
 !!! tip "Pro Tip"

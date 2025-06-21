@@ -114,14 +114,14 @@ graph TB
 
 We welcome contributions! Whether you're fixing bugs, improving documentation, or adding new features, your help is appreciated.
 
-[Contributing Guidelines :material-heart:](development/contributing.md){ .md-button }
+Check the project repository for contribution guidelines and open issues.
 
 ## 📞 Support
 
 Need help? Here are your options:
 
 - 📖 Check the [User Guide](user-guide/basic-operations.md)
-- 🔍 Search our [Troubleshooting](user-guide/troubleshooting.md) section
+- 🔍 Review the troubleshooting section in the User Guide
 - 🐛 Report issues on GitHub
 - 💬 Join our community discussions
 
@@ -129,4 +129,3 @@ Need help? Here are your options:
 
 !!! info "Version Information"
     This documentation is for version 1.0.0 of the BIND DNS server with TSIG implementation.
-    Last updated: {{ git_revision_date_localized }}

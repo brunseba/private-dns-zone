@@ -435,4 +435,4 @@ docker-compose logs bind
 docker-compose exec bind rndc status
 ```
 
-This installation guide covers the most common deployment scenarios. For specific requirements or advanced configurations, refer to the [Configuration](../configuration/bind-config.md) section.
+This installation guide covers the most common deployment scenarios. For specific requirements or advanced configurations, refer to the BIND configuration files in the `config/` directory.

@@ -2,25 +2,27 @@
 # Install with: pip install -r docs-requirements.txt
 
 # Core MkDocs
-mkdocs>=1.5.0
-mkdocs-material>=9.0.0
+mkdocs>=1.5.0,<2.0.0
+mkdocs-material>=9.4.0,<10.0.0
 
-# Plugins for enhanced functionality
-mkdocs-mermaid2-plugin>=0.6.0
+# Essential plugins for enhanced functionality
+mkdocs-mermaid2-plugin>=1.1.0
 mkdocs-git-revision-date-localized-plugin>=1.2.0
 mkdocs-minify-plugin>=0.7.0
 
-# Markdown extensions
+# Markdown extensions (included with mkdocs-material)
 pymdown-extensions>=10.0.0
 
-# Optional plugins for additional features
-mkdocs-awesome-pages-plugin>=2.9.0
-mkdocs-redirects>=1.2.0
-mkdocs-macros-plugin>=0.7.0
+# Optional plugins for additional features (commented out to avoid conflicts)
+# mkdocs-awesome-pages-plugin>=2.9.0
+# mkdocs-redirects>=1.2.0
+# mkdocs-macros-plugin>=0.7.0
 
-# PDF export (optional)
-mkdocs-with-pdf>=0.9.0
-mkdocs-pdf-export-plugin>=0.5.0
+# PDF export plugins (optional - can cause conflicts)
+# mkdocs-with-pdf>=0.9.0
+# mkdocs-pdf-export-plugin>=0.5.0
 
-# Development dependencies
-mkdocs-serve>=1.0.0
+# Additional dependencies for better compatibility
+markdown>=3.4.0
+jinja2>=3.1.0
+pillow>=9.0.0

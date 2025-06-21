@@ -48,12 +48,13 @@ theme:
 plugins:
   - search:
       lang: en
-  - mermaid2:
-      version: 9.4.3
-  - git-revision-date-localized:
-      type: date
-  - minify:
-      minify_html: true
+  # Optional plugins (uncomment when installed):
+  # - mermaid2:
+  #     version: 9.4.3
+  # - git-revision-date-localized:
+  #     type: date
+  # - minify:
+  #     minify_html: true
 
 # Extensions
 markdown_extensions:
@@ -71,8 +72,8 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
@@ -102,25 +103,20 @@ nav:
   - Design:
     - Architecture: design/architecture.md
     - TSIG Security: design/tsig-security.md
-    - Network Design: design/network-design.md
-    - Zone Structure: design/zone-structure.md
   - User Guide:
     - Basic Operations: user-guide/basic-operations.md
-    - Zone Management: user-guide/zone-management.md
-    - Dynamic Updates: user-guide/dynamic-updates.md
-    - Monitoring: user-guide/monitoring.md
-    - Troubleshooting: user-guide/troubleshooting.md
-  - Configuration:
-    - BIND Configuration: configuration/bind-config.md
-    - Docker Setup: configuration/docker-setup.md
-    - Security Settings: configuration/security.md
-  - API Reference:
-    - TSIG Keys: api/tsig-keys.md
-    - Zone Files: api/zone-files.md
-    - Scripts: api/scripts.md
-  - Development:
-    - Contributing: development/contributing.md
-    - Testing: development/testing.md
+  # Future sections (uncomment when pages are created):
+  # - Configuration:
+  #   - BIND Configuration: configuration/bind-config.md
+  #   - Docker Setup: configuration/docker-setup.md
+  #   - Security Settings: configuration/security.md
+  # - API Reference:
+  #   - TSIG Keys: api/tsig-keys.md
+  #   - Zone Files: api/zone-files.md
+  #   - Scripts: api/scripts.md
+  # - Development:
+  #   - Contributing: development/contributing.md
+  #   - Testing: development/testing.md
 
 # Custom CSS
 extra_css:
