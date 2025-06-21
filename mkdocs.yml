@@ -61,6 +61,7 @@ plugins:
   - git-committers:
       repository: brunseba/private-dns-zone
       branch: main
+      token: !ENV [MKDOCS_GIT_COMMITTERS_APIKEY, GITHUB_TOKEN]
   # Optional plugins (disabled temporarily):
   # - mermaid2:
   #     version: 10.4.0
