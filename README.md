@@ -164,4 +164,27 @@ For production environments, consider:
 
 ## License
 
+## 📚 Documentation
+
+Comprehensive documentation is available using MkDocs:
+
+```bash
+# Install documentation dependencies
+pip install -r docs-requirements.txt
+
+# Serve documentation locally
+mkdocs serve
+
+# Access at http://127.0.0.1:8000
+```
+
+The documentation includes:
+- **Getting Started** - Quick setup and installation guides
+- **Architecture** - System design and TSIG security details  
+- **User Guide** - Daily operations and troubleshooting
+- **Configuration** - Advanced setup and customization
+- **API Reference** - Complete technical reference
+
+## License
+
 This configuration is provided as-is for educational and development purposes.
