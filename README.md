@@ -11,7 +11,37 @@ This repository contains a Docker Compose setup for running a BIND DNS server wi
 - ✅ RNDC remote control
 - ✅ Comprehensive logging
 - ✅ Health checks
-- ✅ Sample zones (example.local, dev.local, test.local)
+- ✅ Sample zones (example.local, dev.local, test.local, k8s.local)
+- ✅ **Kubernetes external-dns integration** for automatic DNS management
+
+## 🎯 Use Cases
+
+This DNS server solution is ideal for:
+
+### 🐳 Development
+- Local development environments
+- Testing DNS configurations
+- Microservices discovery
+- Container orchestration
+
+### 🏭 Production
+- Private DNS zones
+- Internal service discovery
+- Secure zone transfers
+- Enterprise DNS infrastructure
+
+### ☸️ Kubernetes Integration
+- **External-DNS automation** - Automatic DNS record management for K8s services
+- **Service discovery** - Kubernetes services → DNS records
+- **Ingress management** - Automatic hostname resolution for ingresses
+- **Multi-cluster DNS** - Centralized DNS for multiple Kubernetes clusters
+- **TSIG-secured updates** - Secure dynamic updates from external-dns
+
+### 📚 Learning
+- DNS protocol understanding
+- TSIG authentication mechanisms
+- BIND configuration and management
+- Security best practices
 
 ## Quick Start
 
@@ -151,6 +181,52 @@ dig @localhost -k tsig-key:dGhpc2lzYXNhbXBsZWtleWZvcnRlc3RpbmdwdXJwb3Nlc29ubHlkb
 │   └── db.192.168.1          # Reverse zone
 └── logs/                      # Log files (created at runtime)
 ```
+
+## ☸️ Kubernetes Integration with external-dns
+
+Automate DNS record management for Kubernetes services and ingresses:
+
+### Quick Setup
+
+```bash
+# 1. Start BIND DNS server
+docker-compose up -d
+
+# 2. Install external-dns in Kubernetes
+cd kubernetes
+./install-external-dns.sh install
+
+# 3. Deploy test service with DNS annotation
+kubectl apply -f examples/test-services.yaml
+
+# 4. Verify DNS record creation
+dig @localhost nginx.k8s.local
+```
+
+### Features
+
+- **Automatic DNS Records** - Services/Ingresses → DNS records
+- **TSIG Authentication** - Secure updates from Kubernetes
+- **Multiple Zones** - Support for different environments
+- **TTL Management** - Configurable record lifetimes
+- **Cleanup** - Automatic record removal when resources are deleted
+
+### Service Example
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: myapp.k8s.local
+    external-dns.alpha.kubernetes.io/ttl: "300"
+spec:
+  type: LoadBalancer
+  # ... service configuration
+```
+
+See [kubernetes/EXTERNAL_DNS_GUIDE.md](kubernetes/EXTERNAL_DNS_GUIDE.md) for complete setup and usage instructions.
 
 ## Performance Tuning
 

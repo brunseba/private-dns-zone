@@ -37,3 +37,13 @@ zone "test.local" {
     allow-query { any; };
     journal "/var/lib/bind/db.test.local.jnl";
 };
+
+// Kubernetes zone for external-dns
+zone "k8s.local" {
+    type master;
+    file "/var/lib/bind/db.k8s.local";
+    allow-update { key "tsig-key"; key "admin-key"; };
+    allow-transfer { key "tsig-key"; };
+    allow-query { any; };
+    journal "/var/lib/bind/db.k8s.local.jnl";
+};
