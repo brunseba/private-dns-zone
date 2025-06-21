@@ -48,10 +48,9 @@ theme:
 plugins:
   - search:
       lang: en
-  # Optional plugins:
-  - mermaid2:
-      version: 10.4.0
-      javascript: true
+  # Optional plugins (disabled temporarily):
+  # - mermaid2:
+  #     version: 10.4.0
   # - git-revision-date-localized:
   #     type: date
   # - minify:
