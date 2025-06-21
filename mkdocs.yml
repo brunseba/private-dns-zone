@@ -106,6 +106,7 @@ nav:
   - User Guide:
     - Basic Operations: user-guide/basic-operations.md
   - Use Cases:
+    - Overview: use-cases/overview.md
     - External-DNS Integration: use-cases/external-dns.md
     - DNSControl Integration: use-cases/dnscontrol.md
     - octoDNS Integration: use-cases/octodns.md
