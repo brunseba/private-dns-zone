@@ -106,10 +106,10 @@ nav:
   - User Guide:
     - Basic Operations: user-guide/basic-operations.md
   - Use Cases:
-    - Overview: use-cases/overview.md
-    - External-DNS Integration: use-cases/external-dns.md
-    - DNSControl Integration: use-cases/dnscontrol.md
-    - octoDNS Integration: use-cases/octodns.md
+    - UC-000 Overview: use-cases/uc-000-overview.md
+    - UC-001 External-DNS Integration: use-cases/uc-001-external-dns.md
+    - UC-002 DNSControl Integration: use-cases/uc-002-dnscontrol.md
+    - UC-003 octoDNS Integration: use-cases/uc-003-octodns.md
   # Future sections (uncomment when pages are created):
   # - Configuration:
   #   - BIND Configuration: configuration/bind-config.md

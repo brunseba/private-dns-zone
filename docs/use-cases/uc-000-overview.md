@@ -1,4 +1,4 @@
-# Use Cases Overview
+# UC-000: Use Cases Overview
 
 This section provides a comprehensive overview of the different ways to integrate with your BIND DNS server setup. Each use case addresses specific needs and deployment scenarios.
 
@@ -214,8 +214,8 @@ graph LR
 
 ## Next Steps
 
-- [External-DNS Integration](external-dns.md) - Kubernetes-native DNS automation
-- [DNSControl Integration](dnscontrol.md) - JavaScript-based DNS management
-- [octoDNS Integration](octodns.md) - Python-based multi-provider DNS sync
+- [UC-001: External-DNS Integration](uc-001-external-dns.md) - Kubernetes-native DNS automation
+- [UC-002: DNSControl Integration](uc-002-dnscontrol.md) - JavaScript-based DNS management
+- [UC-003: octoDNS Integration](uc-003-octodns.md) - Python-based multi-provider DNS sync
 
 Each integration guide provides detailed setup instructions, configuration examples, and best practices for secure DNS management.
