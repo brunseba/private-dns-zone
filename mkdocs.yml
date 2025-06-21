@@ -113,6 +113,7 @@ nav:
     - UC-003 octoDNS Integration: use-cases/uc-003-octodns.md
   - Development:
     - Devbox Setup: development/devbox-setup.md
+    - DNS Client Testing: development/dns-client-testing.md
   # Future sections (uncomment when pages are created):
   # - Configuration:
   #   - BIND Configuration: configuration/bind-config.md

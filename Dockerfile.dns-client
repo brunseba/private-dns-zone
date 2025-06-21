@@ -1,0 +1,321 @@
+# DNS Client Testing Container
+# Based on Alpine Linux for minimal size and security
+FROM alpine:3.19
+
+# Metadata
+LABEL maintainer="DNS Operations Team"
+LABEL description="DNS client testing container with dig, DNSControl, octoDNS, and other DNS tools"
+LABEL version="1.0"
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PATH="/root/.local/bin:$PATH" \
+    GOPATH="/root/go" \
+    GOBIN="/root/go/bin"
+
+# Install system dependencies
+RUN apk add --no-cache \
+    # Core system tools
+    bash \
+    curl \
+    wget \
+    ca-certificates \
+    openssl \
+    # DNS tools
+    bind-tools \
+    # Development tools
+    git \
+    make \
+    # Python and pip
+    python3 \
+    py3-pip \
+    python3-dev \
+    # Go compiler
+    go \
+    # Node.js for JavaScript tools
+    nodejs \
+    npm \
+    # Build dependencies
+    gcc \
+    musl-dev \
+    libffi-dev \
+    # JSON/YAML processing
+    jq \
+    yq \
+    # Network debugging
+    tcpdump \
+    netcat-openbsd \
+    iputils \
+    # Text processing
+    grep \
+    sed \
+    awk
+
+# Create working directories
+RUN mkdir -p /root/go/bin /root/.local/bin /workspace /dns-tools
+
+# Install DNSControl
+RUN go install github.com/StackExchange/dnscontrol/v4@latest
+
+# Install octoDNS in a virtual environment
+RUN python3 -m venv /opt/octodns-env && \
+    /opt/octodns-env/bin/pip install --upgrade pip && \
+    /opt/octodns-env/bin/pip install octodns[bind] octodns[route53] octodns[azure] octodns[gcp]
+
+# Create activation script for octoDNS
+RUN echo '#!/bin/bash\nsource /opt/octodns-env/bin/activate\nexec "$@"' > /usr/local/bin/octodns-activate && \
+    chmod +x /usr/local/bin/octodns-activate
+
+# Create convenience scripts for testing
+COPY <<EOF /usr/local/bin/test-dns
+#!/bin/bash
+set -e
+
+DNS_SERVER=\${DNS_SERVER:-bind}
+DNS_PORT=\${DNS_PORT:-53}
+TEST_ZONE=\${TEST_ZONE:-example.local}
+
+echo "=== DNS Client Testing Tool ==="
+echo "DNS Server: \$DNS_SERVER:\$DNS_PORT"
+echo "Test Zone: \$TEST_ZONE"
+echo ""
+
+# Test basic DNS resolution
+echo "1. Testing basic DNS resolution..."
+dig @\$DNS_SERVER -p \$DNS_PORT \$TEST_ZONE SOA +short || echo "SOA query failed"
+dig @\$DNS_SERVER -p \$DNS_PORT \$TEST_ZONE NS +short || echo "NS query failed"
+
+# Test TSIG if keys are available
+if [ -n "\$TSIG_KEY_NAME" ] && [ -n "\$TSIG_KEY_SECRET" ]; then
+    echo ""
+    echo "2. Testing TSIG authentication..."
+    dig @\$DNS_SERVER -p \$DNS_PORT -y hmac-sha256:\$TSIG_KEY_NAME:\$TSIG_KEY_SECRET \$TEST_ZONE SOA +short || echo "TSIG SOA query failed"
+fi
+
+# Test dynamic updates if external-dns keys are available
+if [ -n "\$EXTERNAL_DNS_TSIG_KEY_NAME" ] && [ -n "\$EXTERNAL_DNS_TSIG_KEY_SECRET" ]; then
+    echo ""
+    echo "3. Testing dynamic updates with external-dns key..."
+    TEST_RECORD="test-\$(date +%s).example.local"
+    echo "server \$DNS_SERVER \$DNS_PORT
+key hmac-sha256:\$EXTERNAL_DNS_TSIG_KEY_NAME \$EXTERNAL_DNS_TSIG_KEY_SECRET
+update add \$TEST_RECORD 300 A 192.168.1.200
+send
+quit" | nsupdate || echo "Dynamic update failed"
+    
+    # Verify the record was added
+    sleep 2
+    dig @\$DNS_SERVER -p \$DNS_PORT \$TEST_RECORD A +short || echo "Record verification failed"
+    
+    # Clean up
+    echo "server \$DNS_SERVER \$DNS_PORT
+key hmac-sha256:\$EXTERNAL_DNS_TSIG_KEY_NAME \$EXTERNAL_DNS_TSIG_KEY_SECRET
+update delete \$TEST_RECORD A
+send
+quit" | nsupdate || echo "Record cleanup failed"
+fi
+
+echo ""
+echo "DNS testing completed!"
+EOF
+
+COPY <<EOF /usr/local/bin/test-dnscontrol
+#!/bin/bash
+set -e
+
+echo "=== DNSControl Testing Tool ==="
+
+# Check if dnsconfig.js exists
+if [ ! -f "/workspace/dnsconfig.js" ]; then
+    echo "Creating example dnsconfig.js..."
+    cat > /workspace/dnsconfig.js << 'DNSEOF'
+var REG_NONE = NewRegistrar("none");
+var DSP_BIND = NewDnsProvider("bind", {
+    "server": "\${DNS_SERVER:-bind}:53",
+    "tsig_key_name": "\${EXTERNAL_DNS_TSIG_KEY_NAME}",
+    "tsig_key_algorithm": "hmac-sha256",
+    "tsig_key_secret": "\${EXTERNAL_DNS_TSIG_KEY_SECRET}"
+});
+
+D("example.local", REG_NONE, DnsProvider(DSP_BIND),
+    A("@", "192.168.1.100"),
+    A("www", "192.168.1.100"),
+    A("api", "192.168.1.101"),
+    CNAME("mail", "www"),
+    MX("@", 10, "mail.example.local."),
+    TXT("@", "v=spf1 include:_spf.google.com ~all")
+);
+DNSEOF
+    echo "Example dnsconfig.js created in /workspace/"
+fi
+
+echo "Validating DNSControl configuration..."
+cd /workspace
+dnscontrol check
+
+echo "Previewing changes..."
+dnscontrol preview
+
+echo ""
+echo "DNSControl testing completed!"
+echo "To apply changes, run: dnscontrol push"
+EOF
+
+COPY <<EOF /usr/local/bin/test-octodns
+#!/bin/bash
+set -e
+
+echo "=== octoDNS Testing Tool ==="
+
+# Check if config.yaml exists
+if [ ! -f "/workspace/config.yaml" ]; then
+    echo "Creating example config.yaml..."
+    cat > /workspace/config.yaml << 'OCTOEOF'
+---
+providers:
+  bind:
+    class: octodns_bind.BindProvider
+    host: \${DNS_SERVER:-bind}
+    port: 53
+    key_name: \${EXTERNAL_DNS_TSIG_KEY_NAME}
+    key_algorithm: HMAC-SHA256
+    key_secret: env/EXTERNAL_DNS_TSIG_KEY_SECRET
+
+zones:
+  example.local.:
+    sources:
+      - bind
+    targets:
+      - bind
+OCTOEOF
+    echo "Example config.yaml created in /workspace/"
+fi
+
+# Check if zone file exists
+if [ ! -f "/workspace/example.local.yaml" ]; then
+    echo "Creating example zone file..."
+    cat > /workspace/example.local.yaml << 'ZONEEOF'
+---
+'':
+  - type: A
+    value: 192.168.1.100
+  - type: MX
+    value:
+      exchange: mail.example.local.
+      preference: 10
+  - type: TXT
+    value: "v=spf1 include:_spf.google.com ~all"
+
+www:
+  - type: A
+    value: 192.168.1.100
+
+api:
+  - type: A
+    value: 192.168.1.101
+
+mail:
+  - type: CNAME
+    value: www.example.local.
+ZONEEOF
+    echo "Example zone file created in /workspace/"
+fi
+
+echo "Activating octoDNS environment..."
+source /opt/octodns-env/bin/activate
+
+echo "Validating octoDNS configuration..."
+cd /workspace
+octodns-validate --config-file config.yaml
+
+echo "Planning changes..."
+octodns-sync --config-file config.yaml --plan
+
+echo ""
+echo "octoDNS testing completed!"
+echo "To apply changes, run: octodns-sync --config-file config.yaml"
+EOF
+
+COPY <<EOF /usr/local/bin/run-all-tests
+#!/bin/bash
+set -e
+
+echo "=== DNS Integration Testing Suite ==="
+echo "Testing all DNS client tools and use cases..."
+echo ""
+
+# Wait for DNS server to be ready
+echo "Waiting for DNS server to be ready..."
+for i in {1..30}; do
+    if dig @\${DNS_SERVER:-bind} -p \${DNS_PORT:-53} localhost > /dev/null 2>&1; then
+        echo "DNS server is ready!"
+        break
+    fi
+    echo "Attempt \$i/30: DNS server not ready, waiting 2 seconds..."
+    sleep 2
+done
+
+echo ""
+echo "=== Running DNS Resolution Tests ==="
+test-dns
+
+echo ""
+echo "=== Running DNSControl Tests ==="
+test-dnscontrol
+
+echo ""
+echo "=== Running octoDNS Tests ==="
+test-octodns
+
+echo ""
+echo "=== All Tests Completed ==="
+echo "Check the output above for any errors or issues."
+EOF
+
+# Make scripts executable
+RUN chmod +x /usr/local/bin/test-dns \
+             /usr/local/bin/test-dnscontrol \
+             /usr/local/bin/test-octodns \
+             /usr/local/bin/run-all-tests
+
+# Create entrypoint script
+COPY <<EOF /entrypoint.sh
+#!/bin/bash
+set -e
+
+echo "DNS Client Container Starting..."
+echo "Available commands:"
+echo "  test-dns          - Test basic DNS resolution and TSIG"
+echo "  test-dnscontrol   - Test DNSControl configuration"
+echo "  test-octodns      - Test octoDNS configuration"
+echo "  run-all-tests     - Run all test suites"
+echo "  dnscontrol        - Run DNSControl commands"
+echo "  octodns-activate  - Activate octoDNS environment"
+echo ""
+
+# If no command provided, start interactive shell
+if [ \$# -eq 0 ]; then
+    echo "Starting interactive shell..."
+    exec /bin/bash
+else
+    exec "\$@"
+fi
+EOF
+
+RUN chmod +x /entrypoint.sh
+
+# Set working directory
+WORKDIR /workspace
+
+# Expose useful environment info
+ENV DNS_CLIENT_VERSION="1.0" \
+    CONTAINER_TYPE="dns-client"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD dig @${DNS_SERVER:-bind} -p ${DNS_PORT:-53} localhost || exit 1
+
+# Set entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/bin/bash"]

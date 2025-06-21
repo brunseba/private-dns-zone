@@ -58,6 +58,38 @@ services:
       - "com.dns-server.service=bind"
       - "com.dns-server.version=${BIND_TAG}"
 
+  dns-client:
+    build:
+      context: .
+      dockerfile: Dockerfile.dns-client
+    container_name: ${DNS_CLIENT_CONTAINER_NAME:-dns-client}
+    restart: "no"  # Only run when explicitly started
+    depends_on:
+      bind:
+        condition: service_healthy
+    volumes:
+      - .:/workspace
+      - ${CONFIG_PATH}:${BIND_CONFIG_PATH}:ro
+    environment:
+      - DNS_SERVER=${DNS_SERVER:-bind}
+      - DNS_PORT=${DNS_PORT_UDP:-53}
+      - TSIG_KEY_NAME=${TSIG_KEY_NAME}
+      - TSIG_KEY_SECRET=${TSIG_KEY_SECRET}
+      - EXTERNAL_DNS_TSIG_KEY_NAME=${EXTERNAL_DNS_TSIG_KEY_NAME}
+      - EXTERNAL_DNS_TSIG_KEY_SECRET=${EXTERNAL_DNS_TSIG_KEY_SECRET}
+      - ADMIN_KEY_NAME=${ADMIN_KEY_NAME}
+      - ADMIN_KEY_SECRET=${ADMIN_KEY_SECRET}
+      - TEST_ZONE=${TEST_ZONE:-example.local}
+    networks:
+      - dns-network
+    working_dir: /workspace
+    profiles:
+      - testing
+    labels:
+      - "com.dns-server.environment=${ENVIRONMENT}"
+      - "com.dns-server.service=dns-client"
+      - "com.dns-server.type=testing"
+
 networks:
   dns-network:
     driver: bridge
