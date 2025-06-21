@@ -96,6 +96,7 @@ markdown_extensions:
 # Page tree
 nav:
   - Home: index.md
+  - Requirements: requirements.md
   - Getting Started:
     - Overview: getting-started/overview.md
     - Quick Start: getting-started/quick-start.md
