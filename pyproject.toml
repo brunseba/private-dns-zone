@@ -1,0 +1,248 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bind-dns-server"
+dynamic = ["version"]
+description = "BIND DNS Server with TSIG authentication and Docker Compose orchestration"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "DNS Operations Team", email = "dns-ops@example.com"}
+]
+maintainers = [
+    {name = "DNS Operations Team", email = "dns-ops@example.com"}
+]
+keywords = [
+    "dns",
+    "bind",
+    "tsig", 
+    "docker",
+    "docker-compose",
+    "kubernetes",
+    "external-dns",
+    "dnscontrol",
+    "octodns"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet :: Name Service (DNS)",
+    "Topic :: System :: Systems Administration",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "pyyaml>=6.0",
+    "jinja2>=3.0.0",
+    "click>=8.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "commitizen>=3.0.0",
+    "pre-commit>=3.0.0",
+    "black>=23.0.0",
+    "isort>=5.10.0",
+    "flake8>=6.0.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0"
+]
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.0.0",
+    "mkdocs-mermaid2-plugin>=1.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/private-dns-zone"
+Documentation = "https://dns-docs.example.com"
+Repository = "https://github.com/your-org/private-dns-zone"
+"Bug Tracker" = "https://github.com/your-org/private-dns-zone/issues"
+Changelog = "https://github.com/your-org/private-dns-zone/blob/main/CHANGELOG.md"
+
+[project.scripts]
+dns-env-manager = "scripts.env_manager:main"
+
+[tool.setuptools]
+packages = ["scripts"]
+
+[tool.setuptools_scm]
+write_to = "scripts/_version.py"
+version_scheme = "release-branch-semver"
+
+# Commitizen configuration for semantic versioning
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver"
+version_provider = "scm"
+update_changelog_on_bump = true
+major_version_zero = true
+bump_message = "bump: version $current_version → $new_version"
+
+# Version files to update
+version_files = [
+    "pyproject.toml:version",
+    "scripts/_version.py",
+    "docker-compose.yml:labels.*version",
+    "docs/index.md:<!-- version: ",
+]
+
+# Changelog configuration
+[tool.commitizen.changelog]
+file_name = "CHANGELOG.md"
+unreleased_title = "Unreleased"
+order = ["feat", "fix", "refactor", "perf"]
+start_rev = "HEAD"
+incremental = true
+
+# Custom changelog sections
+[[tool.commitizen.customize.questions]]
+type = "list"
+name = "type"
+choices = [
+    {value = "feat", name = "feat: ✨ A new feature"},
+    {value = "fix", name = "fix: 🐛 A bug fix"},
+    {value = "docs", name = "docs: 📚 Documentation changes"},
+    {value = "style", name = "style: 💎 Code style changes (formatting, etc)"},
+    {value = "refactor", name = "refactor: 📦 Code refactoring"},
+    {value = "perf", name = "perf: 🚀 Performance improvements"},
+    {value = "test", name = "test: 🚨 Adding or updating tests"},
+    {value = "build", name = "build: 🛠️  Build system or dependencies"},
+    {value = "ci", name = "ci: ⚙️ CI/CD changes"},
+    {value = "chore", name = "chore: 🔧 Other changes (maintenance, etc)"},
+    {value = "revert", name = "revert: ⏪ Revert a previous commit"}
+]
+message = "Select the type of change you are committing"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "scope"
+message = "What is the scope of this change? (dns, docker, tsig, docs, ci, etc.) [optional]"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "subject"
+message = "Write a short, imperative description of the change"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "body"
+message = "Provide a longer description of the change [optional]"
+
+[[tool.commitizen.customize.questions]]
+type = "confirm"
+name = "is_breaking_change"
+message = "Is this a breaking change?"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "breaking_change_content"
+message = "Describe the breaking change"
+filter = "lower"
+when = "{{ answers.is_breaking_change }}"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "footer"
+message = "Footer (issues, PRs, etc.) [optional]"
+
+[tool.commitizen.customize]
+message_template = """{{change_type}}{% if scope %}({{ scope }}){% endif %}{% if is_breaking_change %}!{% endif %}: {{ subject }}
+{% if body %}
+{{ body }}
+{% endif %}
+{% if is_breaking_change %}
+BREAKING CHANGE: {{ breaking_change_content }}
+{% endif %}
+{% if footer %}
+{{ footer }}
+{% endif %}"""
+
+example = """feat(dns): add TSIG key rotation functionality
+
+Add automatic TSIG key rotation with configurable intervals.
+This includes new environment variables and safety checks.
+
+BREAKING CHANGE: TSIG_ROTATION_ENABLED now defaults to false
+
+Closes #123"""
+
+schema = """
+<type>[optional scope][optional !]: <description>
+
+[optional body]
+
+[optional footer(s)]
+"""
+
+# Black code formatter configuration
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# isort import sorter configuration
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["scripts"]
+known_third_party = ["click", "jinja2", "yaml"]
+
+# pytest configuration
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests"
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["scripts"]
+omit = ["*/tests/*", "*/test_*", "*/_version.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:"
+]
+
+[tool.coverage.html]
+directory = "htmlcov"

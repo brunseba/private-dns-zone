@@ -115,6 +115,7 @@ nav:
     - Devbox Setup: development/devbox-setup.md
     - DNS Client Testing: development/dns-client-testing.md
     - Quality Management: development/quality-management.md
+    - Release Management: development/release-management.md
   # Future sections (uncomment when pages are created):
   # - Configuration:
   #   - BIND Configuration: configuration/bind-config.md
