@@ -1,0 +1,300 @@
+/* Custom CSS for BIND DNS Documentation */
+
+/* Root variables for consistent theming */
+:root {
+    --dns-primary: #2196f3;
+    --dns-secondary: #1976d2;
+    --dns-accent: #ff9800;
+    --dns-success: #4caf50;
+    --dns-warning: #ff9800;
+    --dns-error: #f44336;
+    --dns-info: #2196f3;
+}
+
+/* Custom color scheme adjustments */
+[data-md-color-scheme="default"] {
+    --md-primary-fg-color: var(--dns-primary);
+    --md-accent-fg-color: var(--dns-accent);
+}
+
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color: var(--dns-secondary);
+    --md-accent-fg-color: var(--dns-accent);
+}
+
+/* Enhanced code blocks */
+.highlight pre {
+    border-left: 4px solid var(--dns-primary);
+    border-radius: 4px;
+    background-color: var(--md-code-bg-color);
+}
+
+/* TSIG key styling */
+.tsig-key {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #f5f5f5;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    word-break: break-all;
+}
+
+[data-md-color-scheme="slate"] .tsig-key {
+    background-color: #2d2d2d;
+    border-color: #404040;
+    color: #e0e0e0;
+}
+
+/* DNS record type badges */
+.dns-record-type {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-right: 4px;
+}
+
+.dns-record-type.a { background-color: #e3f2fd; color: #1976d2; }
+.dns-record-type.aaaa { background-color: #e8f5e8; color: #2e7d32; }
+.dns-record-type.cname { background-color: #fff3e0; color: #f57c00; }
+.dns-record-type.mx { background-color: #fce4ec; color: #c2185b; }
+.dns-record-type.txt { background-color: #f3e5f5; color: #7b1fa2; }
+.dns-record-type.ns { background-color: #e0f2f1; color: #00695c; }
+.dns-record-type.ptr { background-color: #fff8e1; color: #ef6c00; }
+
+[data-md-color-scheme="slate"] .dns-record-type.a { background-color: #0d47a1; color: #bbdefb; }
+[data-md-color-scheme="slate"] .dns-record-type.aaaa { background-color: #1b5e20; color: #c8e6c9; }
+[data-md-color-scheme="slate"] .dns-record-type.cname { background-color: #e65100; color: #ffcc02; }
+[data-md-color-scheme="slate"] .dns-record-type.mx { background-color: #880e4f; color: #f8bbd9; }
+[data-md-color-scheme="slate"] .dns-record-type.txt { background-color: #4a148c; color: #e1bee7; }
+[data-md-color-scheme="slate"] .dns-record-type.ns { background-color: #004d40; color: #b2dfdb; }
+[data-md-color-scheme="slate"] .dns-record-type.ptr { background-color: #bf360c; color: #ffcc80; }
+
+/* Status indicators */
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 16px;
+    font-size: 0.875em;
+    font-weight: 500;
+    margin: 2px;
+}
+
+.status-indicator::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-indicator.running { background-color: #e8f5e8; color: #2e7d32; }
+.status-indicator.running::before { background-color: #4caf50; }
+
+.status-indicator.stopped { background-color: #ffebee; color: #c62828; }
+.status-indicator.stopped::before { background-color: #f44336; }
+
+.status-indicator.warning { background-color: #fff8e1; color: #ef6c00; }
+.status-indicator.warning::before { background-color: #ff9800; }
+
+.status-indicator.pending { background-color: #e3f2fd; color: #1976d2; }
+.status-indicator.pending::before { background-color: #2196f3; }
+
+[data-md-color-scheme="slate"] .status-indicator.running { background-color: #1b5e20; color: #a5d6a7; }
+[data-md-color-scheme="slate"] .status-indicator.stopped { background-color: #b71c1c; color: #ffcdd2; }
+[data-md-color-scheme="slate"] .status-indicator.warning { background-color: #e65100; color: #ffcc80; }
+[data-md-color-scheme="slate"] .status-indicator.pending { background-color: #0d47a1; color: #90caf9; }
+
+/* Command line styling */
+.command-line {
+    background: linear-gradient(90deg, #1e1e1e 0%, #2d2d2d 100%);
+    color: #ffffff;
+    padding: 16px;
+    border-radius: 8px;
+    font-family: 'Roboto Mono', monospace;
+    overflow-x: auto;
+    border-left: 4px solid var(--dns-primary);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.command-line .prompt {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.command-line .command {
+    color: #81c784;
+}
+
+.command-line .output {
+    color: #e0e0e0;
+    margin-top: 8px;
+}
+
+.command-line .comment {
+    color: #757575;
+    font-style: italic;
+}
+
+/* Enhanced tables */
+.md-typeset table:not([class]) {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.md-typeset table:not([class]) th {
+    background-color: var(--dns-primary);
+    color: white;
+    font-weight: 600;
+    text-align: left;
+}
+
+.md-typeset table:not([class]) td {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.md-typeset table:not([class]) tr:hover {
+    background-color: rgba(33, 150, 243, 0.04);
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) td {
+    border-bottom: 1px solid #404040;
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) tr:hover {
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+/* Admonition customizations */
+.md-typeset .admonition.note,
+.md-typeset details.note {
+    border-color: var(--dns-info);
+}
+
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
+    border-color: var(--dns-success);
+}
+
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+    border-color: var(--dns-warning);
+}
+
+.md-typeset .admonition.danger,
+.md-typeset details.danger {
+    border-color: var(--dns-error);
+}
+
+/* Zone file syntax highlighting */
+.zone-record {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 4px;
+    border-left: 4px solid var(--dns-primary);
+    overflow-x: auto;
+}
+
+[data-md-color-scheme="slate"] .zone-record {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}
+
+.zone-record .ttl { color: #6f42c1; font-weight: bold; }
+.zone-record .class { color: #20c997; font-weight: bold; }
+.zone-record .type { color: #fd7e14; font-weight: bold; }
+.zone-record .data { color: #0d6efd; }
+.zone-record .comment { color: #6c757d; font-style: italic; }
+
+/* Configuration block styling */
+.config-block {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 16px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.config-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4caf50, #2196f3, #ff9800);
+}
+
+.config-block h4 {
+    margin-top: 0;
+    color: white;
+    font-size: 1.1em;
+}
+
+.config-block code {
+    background-color: rgba(255,255,255,0.1);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* Responsive design improvements */
+@media screen and (max-width: 768px) {
+    .command-line {
+        font-size: 0.875em;
+        padding: 12px;
+    }
+    
+    .dns-record-type {
+        font-size: 0.7em;
+        padding: 1px 6px;
+    }
+    
+    .status-indicator {
+        font-size: 0.8em;
+        padding: 3px 6px;
+    }
+}
+
+/* Mermaid diagram theming */
+.mermaid {
+    background-color: transparent !important;
+}
+
+/* Print styles */
+@media print {
+    .md-header,
+    .md-tabs,
+    .md-footer,
+    .md-sidebar {
+        display: none !important;
+    }
+    
+    .md-main__inner {
+        margin: 0 !important;
+    }
+    
+    .md-content {
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+    
+    .command-line {
+        background: #f5f5f5 !important;
+        color: #333 !important;
+        border: 1px solid #ddd;
+    }
+    
+    .config-block {
+        background: #f8f9fa !important;
+        color: #333 !important;
+        border: 1px solid #ddd;
+    }
+}

@@ -1,0 +1,139 @@
+site_name: BIND DNS Server with TSIG Documentation
+site_description: Comprehensive documentation for BIND DNS server with TSIG key capabilities
+site_author: DNS Operations Team
+site_url: https://dns-docs.local
+
+# Repository information
+repo_name: private-dns-zone
+repo_url: https://github.com/your-org/private-dns-zone
+edit_uri: edit/main/docs/
+
+# Copyright
+copyright: Copyright &copy; 2024 DNS Operations Team
+
+# Configuration
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/git-alt
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+  - mermaid2:
+      version: 9.4.3
+  - git-revision-date-localized:
+      type: date
+  - minify:
+      minify_html: true
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - meta
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - toc:
+      permalink: true
+
+# Page tree
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Overview: getting-started/overview.md
+    - Quick Start: getting-started/quick-start.md
+    - Installation: getting-started/installation.md
+  - Design:
+    - Architecture: design/architecture.md
+    - TSIG Security: design/tsig-security.md
+    - Network Design: design/network-design.md
+    - Zone Structure: design/zone-structure.md
+  - User Guide:
+    - Basic Operations: user-guide/basic-operations.md
+    - Zone Management: user-guide/zone-management.md
+    - Dynamic Updates: user-guide/dynamic-updates.md
+    - Monitoring: user-guide/monitoring.md
+    - Troubleshooting: user-guide/troubleshooting.md
+  - Configuration:
+    - BIND Configuration: configuration/bind-config.md
+    - Docker Setup: configuration/docker-setup.md
+    - Security Settings: configuration/security.md
+  - API Reference:
+    - TSIG Keys: api/tsig-keys.md
+    - Zone Files: api/zone-files.md
+    - Scripts: api/scripts.md
+  - Development:
+    - Contributing: development/contributing.md
+    - Testing: development/testing.md
+
+# Custom CSS
+extra_css:
+  - assets/stylesheets/extra.css
+
+# Custom JavaScript
+extra_javascript:
+  - assets/javascripts/mermaid.js
+
+# Extra
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/your-org/private-dns-zone
+  version:
+    provider: mike
