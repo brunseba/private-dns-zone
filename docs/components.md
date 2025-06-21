@@ -199,7 +199,7 @@ Components enabling external integrations:
 ### Complete Components Overview
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph "Core DNS Services [CMP-001 to CMP-009]"
         CMP001["CMP-001<br/>BIND DNS Server"]
         CMP002["CMP-002<br/>DNS Zone Files"]
