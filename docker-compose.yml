@@ -2,35 +2,68 @@ version: '3.8'
 
 services:
   bind:
-    image: internetsystemsconsortium/bind9:9.19
-    container_name: bind-dns-server
+    image: ${BIND_IMAGE}:${BIND_TAG}
+    container_name: ${BIND_CONTAINER_NAME}
     restart: unless-stopped
     ports:
-      - "53:53/udp"
-      - "53:53/tcp"
-      - "953:953/tcp"  # RNDC control port
+      - "${DNS_PORT_UDP}:53/udp"
+      - "${DNS_PORT_TCP}:53/tcp"
+      - "${RNDC_PORT}:953/tcp"  # RNDC control port
     volumes:
-      - ./config:/etc/bind
-      - ./zones:/var/lib/bind
-      - ./logs:/var/log/bind
+      - ${CONFIG_PATH}:${BIND_CONFIG_PATH}
+      - ${ZONES_PATH}:${BIND_ZONES_PATH}
+      - ${LOGS_PATH}:${BIND_LOGS_PATH}
     environment:
-      - BIND9_USER=bind
+      - BIND9_USER=${BIND_USER}
+      - ENVIRONMENT=${ENVIRONMENT}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - DEBUG_MODE=${DEBUG_MODE}
+      - VERBOSE_LOGGING=${VERBOSE_LOGGING}
+      # TSIG Key configuration
+      - TSIG_KEY_NAME=${TSIG_KEY_NAME}
+      - TSIG_KEY_SECRET=${TSIG_KEY_SECRET}
+      - ADMIN_KEY_NAME=${ADMIN_KEY_NAME}
+      - ADMIN_KEY_SECRET=${ADMIN_KEY_SECRET}
+      - RNDC_KEY_NAME=${RNDC_KEY_NAME}
+      - RNDC_KEY_SECRET=${RNDC_KEY_SECRET}
+      # DNS Forwarders
+      - DNS_FORWARDER_1=${DNS_FORWARDER_1}
+      - DNS_FORWARDER_2=${DNS_FORWARDER_2}
+      - DNS_FORWARDER_3=${DNS_FORWARDER_3}
+      # Zone configuration
+      - DEFAULT_TTL=${DEFAULT_TTL}
+      - DEFAULT_REFRESH=${DEFAULT_REFRESH}
+      - DEFAULT_RETRY=${DEFAULT_RETRY}
+      - DEFAULT_EXPIRE=${DEFAULT_EXPIRE}
+      - DEFAULT_MINIMUM=${DEFAULT_MINIMUM}
     networks:
       - dns-network
-    command: ["named", "-g", "-c", "/etc/bind/named.conf", "-u", "bind"]
+    command: ["named", "-g", "-c", "${BIND_CONFIG_PATH}/named.conf", "-u", "${BIND_USER}"]
     healthcheck:
       test: ["CMD", "dig", "@127.0.0.1", "localhost"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
+      interval: ${HEALTH_CHECK_INTERVAL}
+      timeout: ${HEALTH_CHECK_TIMEOUT}
+      retries: ${HEALTH_CHECK_RETRIES}
+      start_period: ${HEALTH_CHECK_START_PERIOD}
+    deploy:
+      resources:
+        limits:
+          memory: ${BIND_MEMORY_LIMIT}
+          cpus: '${BIND_CPU_LIMIT}'
+        reservations:
+          memory: ${BIND_MEMORY_RESERVATION}
+          cpus: '${BIND_CPU_RESERVATION}'
+    labels:
+      - "com.dns-server.environment=${ENVIRONMENT}"
+      - "com.dns-server.service=bind"
+      - "com.dns-server.version=${BIND_TAG}"
 
 networks:
   dns-network:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: ${DOCKER_SUBNET}
 
 volumes:
   bind-config:

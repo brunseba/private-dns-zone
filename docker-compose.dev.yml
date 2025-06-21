@@ -1,0 +1,80 @@
+# Development environment override for docker-compose.yml
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+
+version: '3.8'
+
+services:
+  bind:
+    # Development-specific configuration
+    restart: "no"  # Don't restart automatically in dev
+    # Enable debug mode and verbose logging
+    environment:
+      - DEBUG_MODE=true
+      - VERBOSE_LOGGING=true
+      - LOG_LEVEL=debug
+    # Development health checks (more frequent for faster feedback)
+    healthcheck:
+      test: ["CMD", "dig", "@127.0.0.1", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 2
+      start_period: 10s
+    # Development resource limits (lower for local development)
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+          cpus: '0.25'
+        reservations:
+          memory: 128m
+          cpus: '0.1'
+    # Development labels
+    labels:
+      - "com.dns-server.environment=development"
+      - "com.dns-server.debug=enabled"
+      - "com.dns-server.auto-reload=enabled"
+    # Mount source code for development (if needed)
+    volumes:
+      - ./config:/etc/bind
+      - ./zones:/var/lib/bind
+      - ./logs:/var/log/bind
+      # Optional: Mount scripts for development
+      - ./scripts:/opt/scripts:ro
+
+  # Optional: Add development tools
+  dns-utils:
+    image: alpine:latest
+    container_name: dns-utils
+    command: sleep infinity
+    networks:
+      - dns-network
+    volumes:
+      - ./scripts:/scripts:ro
+    # Install DNS utilities for testing
+    entrypoint: |
+      sh -c "
+        apk add --no-cache bind-tools curl &&
+        sleep infinity
+      "
+    profiles:
+      - tools  # Only start with: docker-compose --profile tools up
+
+  # Test container for automated testing
+  dns-test:
+    image: alpine:latest
+    container_name: dns-test
+    depends_on:
+      - bind
+    networks:
+      - dns-network
+    volumes:
+      - ./scripts:/scripts:ro
+      - ./tests:/tests:ro
+    entrypoint: |
+      sh -c "
+        apk add --no-cache bind-tools curl bash &&
+        echo 'DNS test container ready' &&
+        sleep infinity
+      "
+    profiles:
+      - test  # Only start with: docker-compose --profile test up
