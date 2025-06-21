@@ -111,6 +111,8 @@ nav:
     - UC-001 External-DNS Integration: use-cases/uc-001-external-dns.md
     - UC-002 DNSControl Integration: use-cases/uc-002-dnscontrol.md
     - UC-003 octoDNS Integration: use-cases/uc-003-octodns.md
+  - Development:
+    - Devbox Setup: development/devbox-setup.md
   # Future sections (uncomment when pages are created):
   # - Configuration:
   #   - BIND Configuration: configuration/bind-config.md
