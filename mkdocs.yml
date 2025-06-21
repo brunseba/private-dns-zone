@@ -105,6 +105,9 @@ nav:
     - TSIG Security: design/tsig-security.md
   - User Guide:
     - Basic Operations: user-guide/basic-operations.md
+  - Use Cases:
+    - External-DNS Integration: use-cases/external-dns.md
+    - DNSControl Integration: use-cases/dnscontrol.md
   # Future sections (uncomment when pages are created):
   # - Configuration:
   #   - BIND Configuration: configuration/bind-config.md
