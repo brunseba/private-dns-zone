@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-07-10
+
+### Features
+- **Fixed BIND DNS server configuration with Ubuntu image**
+- Resolved zone file conflicts in default zones
+- Simplified BIND named command execution
+- Disabled health checks temporarily for development
+- Removed obsolete docker-compose version field
+
+### Improvements
+- Switched from ISC BIND9 to Ubuntu BIND9 for better stability
+- Fixed duplicate zone file mappings causing startup failures
+- Streamlined container command to use direct named execution
+- Added support for custom zone files
+
+### Technical Fixes
+- Resolved 'extra command line arguments' error
+- Fixed zone loading issues with proper file paths
+- Improved container startup reliability
+- Maintained all DNS functionality while fixing core issues
+
+## [1.1.0] - 2025-07-09
+
+### Optimization
+- Significant image size reduction from 1.77GB to 168MB (90.5% reduction)
+- Multistage Docker build optimization
+- Removed unnecessary packages (Node.js, dev tools, etc.)
+
+### Features
+- DNSControl v4.8.0 with Go 1.22 compatibility
+- Complete octoDNS toolkit with Python 3.11
+
+### Technical Enhancements
+- Added comprehensive `.dockerignore` for optimization
+- Automatic package cache cleanup
+- Updated Docker commands for efficiency
+
 ## [Unreleased]
 
 ### Added

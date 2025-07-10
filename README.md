@@ -4,7 +4,20 @@ This repository contains a Docker Compose setup for running a BIND DNS server wi
 
 ## Features
 
-- ✅ BIND 9.19 DNS server
+### v1.2.0 - 2025-07-10
+- **Fixed BIND DNS server configuration with Ubuntu image**
+- Resolved zone file conflicts in default zones
+- Simplified BIND named command execution
+
+### v1.1.0 - 2025-07-09
+- Significant image size reduction from 1.77GB to 168MB
+- Multistage Docker build optimization
+- DNSControl v4.8.0 with Go 1.22 compatibility
+- Complete octoDNS toolkit with Python 3.11
+
+---
+
+- ✅ BIND DNS server
 - ✅ TSIG key authentication for secure operations
 - ✅ Zone transfers with TSIG authentication
 - ✅ Dynamic DNS updates with TSIG keys
