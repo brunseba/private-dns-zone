@@ -7,7 +7,7 @@ WORKDIR /app
 RUN go install github.com/StackExchange/dnscontrol/v4@v4.8.0
 
 # Runtime stage
-FROM alpine:3.20
+FROM alpine:3.23.2
 LABEL maintainer="DNS Operations Team"
 LABEL description="DNS client testing container with dig, DNSControl, octoDNS, and other DNS tools"
 LABEL version="1.0"
